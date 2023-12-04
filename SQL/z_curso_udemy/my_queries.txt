@@ -1,0 +1,294 @@
+DROP TABLE IF EXISTS sales;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS company;
+
+
+
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT,  
+    first_name varchar(255),  
+    last_name varchar(255),  
+    email_address varchar(255),  
+    number_of_complaints int,  
+PRIMARY KEY (customer_id) 
+
+);   
+
+CREATE TABLE items (
+	item_code VARCHAR(255),  
+	item VARCHAR(255),
+	unit_price DECIMAL(10, 2),  
+	company­_id VARCHAR(255),
+PRIMARY KEY (item_code)  
+);
+    
+CREATE TABLE company (
+	company_id VARCHAR(255),  
+	company_name VARCHAR(255),
+	headquarters_phone_number INT(12),
+PRIMARY KEY (company_id)
+);
+    
+CREATE TABLE sales (
+	purchase_number INT AUTO_INCREMENT,
+    date_of_purchase DATE,
+    customer_id INT,
+    item_code VARCHAR(10),
+    PRIMARY KEY (purchase_number)
+);
+
+
+ALTER TABLE sales
+	ADD FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE;
+    
+ALTER TABLE customers
+	ADD UNIQUE KEY (email_address);
+    
+ALTER TABLE customers
+	DROP INDEX email_address;
+
+
+###############3
+
+
+SELECT * FROM employees.employees WHERE hire_date = '1986-06-26';
+SELECT * FROM employees.employees WHERE hire_date = '1986-06-26' AND first_name = 'Maik';
+SELECT * FROM employees.employees WHERE hire_date = '1986-06-26' OR first_name = 'Maik';
+SELECT * FROM employees.employees WHERE hire_date IN ('1986-07-05', '1987-07-05', '1988-07-05');
+SELECT * FROM employees.employees WHERE hire_date NOT IN ('1986-07-05', '1987-07-05', '1988-07-05');
+SELECT * FROM employees.employees WHERE hire_date LIKE '1986%';
+SELECT * FROM employees.employees WHERE hire_date BETWEEN '1990-07-05' AND '1991-07-05';
+SELECT * FROM employees.departments WHERE dept_no IS NOT NULL;
+SELECT COUNT(gender) FROM employees.employees;
+
+# AGGREGATION METHODS
+SELECT COUNT(*) FROM  employees.employees;
+SELECT COUNT(*) FROM  employees.employees WHERE hire_date > '1991-01-01';
+SELECT MAX(hire_date) FROM  b employees.employees WHERE first_name = 'Maik';
+SELECT MIN(hire_date) FROM employees.employees WHERE first_name = 'Maik';
+SELECT DISTINCT(first_name) FROM employees.employees;
+SELECT COUNT(DISTINCT(first_name)) FROM employees.employees;
+
+
+# ORDER BY METHOD
+SELECT * FROM employees.employees ORDER BY first_name ASC;
+SELECT * FROM employees.employees ORDER BY first_name DESC;
+
+
+# GROUP BY
+
+SELECT first_name, COUNT(*) FROM employees.employees
+	WHERE hire_date > '1991-01-01'
+    GROUP BY first_name
+    ORDER BY first_name ASC;
+    
+    
+    
+SELECT first_name, COUNT(first_name) AS names_count
+
+FROM employees.employees
+    GROUP BY first_name
+	HAVING COUNT(first_name) > 250
+    ORDER BY first_name;
+    
+SELECT emp_no, AVG(salary) FROM employees.salaries
+    GROUP BY emp_no
+	HAVING AVG(salary) > 12000
+    ORDER BY emp_no;
+    
+    
+SELECT first_name, COUNT(first_name) FROM employees.employees
+	WHERE hire_date > '1999-01-01'
+    GROUP BY first_name
+    HAVING (COUNT(first_name) < 200 AND COUNT(first_name) > 4);
+    
+    
+SELECT emp_no, COUNT(from_date) AS 'assinaturas' FROM employees.dept_emp
+	WHERE from_date > '2000-01-01'
+    GROUP BY emp_no
+    HAVING COUNT(from_date) > 2
+    ORDER BY COUNT(from_date) DESC;
+
+
+SELECT * FROM employees.salaries;
+
+SELECT SUM(salary) FROM employees.salaries WHERE  from_Date > '1997-01-01';
+
+SELECT MIN(salary) FROM employees.salaries WHERE  from_Date > '1997-01-01';
+SELECT MAX(salary) FROM employees.salaries WHERE  from_Date > '1997-01-01';
+SELECT AVG(salary) FROM employees.salaries WHERE  from_Date > '1997-01-01';
+
+
+SELECT ROUND(AVG(salary), 2) FROM employees.salaries WHERE  from_Date > '1997-01-01';
+
+
+################ INSERTS
+
+
+SELECT * FROM employees.titles;
+SELECT * FROM employees.dept_emp;
+
+INSERT INTO employees.titles 
+	(emp_no, title, from_Date) VALUES (999901, 'Senior Engineer', '1997-10-01');
+    
+INSERT INTO employees.dept_emp 
+	(emp_no, dept_no, from_date, to_date) VALUES (999901, 'd005', '1997-10-01', '9999-01-01');
+    
+    
+SELECT * FROM employees.titles ORDER BY emp_no DESC;
+SELECT * FROM employees.dept_emp ORDER BY emp_no DESC;
+
+DESCRIBE employees.departments_dup;
+
+INSERT INTO  employees.departments_dup (dept_no, dept_name) SELECT * FROM employees.departments;
+INSERT INTO employees.departments_dup (dept_no, dept_name) VALUES ('d010', 'Business Analysis');
+SELECT * FROM employees.departments_dup;
+
+############################## UPDATES
+
+
+
+##################### DELETE
+
+
+DELETE FROM employees.dept_manager_dup WHERE emp_no BETWEEN 999904 AND 999907;
+
+
+SELECT * FROM employees.employees;
+
+SELECT e.emp_no, e.first_name, e.last_name, m.dept_no, m.from_date
+	FROM 
+		employees.employees e,
+		employees.dept_manager m
+    WHERE e.emp_no = m.emp_no
+    ORDER BY m.dept_no DESC, e.emp_no;
+    
+    
+SELECT e.emp_no, e.first_name, e.last_name, m.dept_no, m.from_date
+	FROM employees.employees e
+    LEFT JOIN employees.dept_manager m 
+    ON e.emp_no = m.emp_no
+	WHERE (e.last_name = 'Markovitch' AND m.dept_no IS NOT NULL)
+    ORDER BY m.dept_no DESC, e.emp_no;
+/*
+SELECT * FROM employees.departments_dup ORDER BY dept_no;
+SELECT * FROM employees.dept_manager_dup ORDER BY emp_no;
+
+SELECT m.dept_no, m.emp_no, d.dept_name
+	FROM employees.departments_dup d
+    LEFT JOIN employees.dept_manager_dup m
+    ON d.dept_no = m.dept_no
+    ORDER BY m.dept_no;
+
+
+SELECT m.dept_no, m.emp_no, d.dept_name
+	FROM employees.dept_manager_dup m
+    INNER JOIN employees.departments_dup d ON m.dept_no = d.dept_no
+    ORDER BY m.dept_no;
+    
+SELECT emp.emp_no, emp.first_name, emp.last_name, man.dept_no, man.from_date
+	FROM employees.employees emp
+    INNER JOIN employees.dept_manager man
+    ON emp.emp_no = man.emp_no
+    ORDER BY man.dept_no;
+*/
+SELECT * FROM employees.employees;
+
+SELECT * FROM employees.titles;
+
+SELECT e.first_name, e.last_name, e.hire_date, t.title
+	FROM employees.employees e
+	LEFT JOIN employees.titles t
+    ON e.emp_no = t.emp_no
+	WHERE e.first_name = 'Margareta' AND e.last_name = 'Markovitch';
+    
+SELECT *
+	FROM employees.departments d
+    CROSS JOIN employees.dept_manager m
+    WHERE d.dept_no = 'd009'
+    ORDER BY d.dept_no;
+
+
+SELECT
+d.dept_name, AVG(salary) AS average_salary
+FROM employees.departments d
+JOIN employees.dept_manager m ON d.dept_no = m.dept_no
+JOIN employees.salaries s ON m.emp_no = s.emp_no
+GROUP BY d.dept_name
+HAVING average_salary > 60000
+ORDER BY average_salary DESC;
+
+
+DROP TABLE IF EXISTS employees_dup;
+USE employees;
+CREATE TABLE employees_dup (
+	emp_no INT(11),
+    birth_date DATE,
+    first_name VARCHAR(14),
+    last_name VARCHAR(16),
+    gender ENUM('M', 'F'),
+    hire_date DATE
+    );
+    
+    
+INSERT INTO employees_dup
+	SELECT e.* FROM employees e LIMIT 20;
+    
+INSERT INTO employees_dup VALUES
+	('10001', '1953-09-02', 'Georgi', 'Facello', 'M', '1986-06-26');
+    
+    
+SELECT * FROM employees_dup ORDER BY emp_no;
+
+
+SELECT * FROM (
+	SELECT e.emp_no, e.first_name, e.last_name, NULL AS dept_no, NULL AS from_date
+    FROM employees e WHERE last_name='Denis'
+	
+)
+
+
+SELECT * FROM dept_manager WHERE emp_no IN (
+	SELECT emp_no FROM employees WHERE hire_date BETWEEN '1990-01-01' AND '1995-01-01'
+	);
+    
+SELECT e.first_name, e.last_name
+	FROM employees e
+    WHERE EXISTS (SELECT * FROM dept_manager dm WHERE dm.emp_no = e.emp_no);
+    
+    SELECT *
+	FROM employees e
+    WHERE EXISTS (SELECT * FROM titles t WHERE e.emp_no = t.emp_no AND t.title = 'Assistant Engineer');
+    
+    
+SELECT A.* FROM
+	(SELECT 
+		e.emp_no as employee_ID,
+		MIN(de.dept_no) AS department_code,
+		(SELECT emp_no FROM dept_manager WHERE emp_no = 110022) AS manager_ID
+		FROM employees e
+		JOIN dept_emp de ON e.emp_no = de.emp_no
+		WHERE e.emp_no <= 10020
+		GROUP BY e.emp_no
+		ORDER BY e.emp_no) AS A
+	UNION
+	SELECT B.* FROM
+	(SELECT 
+		e.emp_no as employee_ID,
+		MIN(de.dept_no) AS department_code,
+		(SELECT emp_no FROM dept_manager WHERE emp_no = 110039) AS manager_ID
+	FROM employees e
+	JOIN dept_emp de ON e.emp_no = de.emp_no
+	WHERE e.emp_no > 10020
+	GROUP BY e.emp_no
+	ORDER BY e.emp_no LIMIT 20) AS B;
+    
+    
+DROP TABLE IF EXISTS emp_manager;
+
+CREATE TABLE emp_manager (
+   emp_no INT(11) NOT NULL,
+   dept_no CHAR(4) NULL,
+   manager_no INT(11) NOT NULL
+);

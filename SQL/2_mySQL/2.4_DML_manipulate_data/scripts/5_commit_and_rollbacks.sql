@@ -1,0 +1,10 @@
+
+START TRANSACTION;
+
+SELECT * FROM vendedores;
+
+UPDATE vendedores SET COMISSAO = COMISSAO * 10;
+
+SELECT * FROM vendedores;
+
+ROLLBACK;
