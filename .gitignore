@@ -1,3 +1,10 @@
 venv
 img
 .hypothesis/
+**.brM3
+**.png
+**.jpg
+**.jpeg
+**.gif
+
+**.sql
