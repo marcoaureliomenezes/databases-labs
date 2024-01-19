@@ -7,3 +7,17 @@ It aggregatesknowledge that I've acquired during the last year I will use so muc
 
 - Material needed to build Labs and try to practice some concepts and languages.
 
+
+
+## How to Spin Up the Environment
+
+
+- **Postgres**: docker-compose -f services_postgres.yml up -d
+- **Mysql**: 
+
+
+
+## Como acessar CLI de DBMS
+
+**Mongodb**: $ docker-compose exec -it mongo mongosh --username mongo -password mongo
+

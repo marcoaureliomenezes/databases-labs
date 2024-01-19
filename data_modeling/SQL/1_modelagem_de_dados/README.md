@@ -138,3 +138,61 @@ PS:
 Cardinalidade
 
 
+## Data Base Modeling
+
+### Relacionamentos
+
+Os relacionamentos entre entidades (tabelas) pode ser feita de 4 maneiras distintas:
+- 1:1
+- 1:n
+- n:1
+- n:n
+
+#### Relacionamento 1:1
+
+Exemplos:
+
+- Navio <-> Capitão
+- Empresa <-> CEO
+- Pais <-> Presidente
+- Cidade <-> Prefeito
+- Pessoa <-> Habilitação
+
+#### Relacionamento n:n
+
+Exemplos:
+
+- Estudante <-> Aulas
+- Sprints <-> Engenheiros
+- Jogadores <-> Partidas de futebol
+- Filmes <-> Atores
+- Reuniões de trabalho <-> Funcionários
+
+### Chaves primárias e estrangeiras
+
+Chave privada: 
+
+Chave estrangeira: 
+
+
+### Consistencia de dados
+
+**Situação:**
+
+Dadas 2 tabelas, `livros` e `autores` com relacionamento 1:n:
+- tabelas livros e autores possuem chaves primárias chamadas `id`.
+- tabela livros possui a chave estrangeira chamada `autor_id`.
+
+Casos que demonstram consistência:
+
+**3 Cenários de consistência para inserção**
+
+- Inserção de chave estrangeira que existe como chave primária na tabela 1: Funciona OK.
+- Inserção de chave estrangeira como NULL: Funciona OK.
+- Inserção de chave estrangeira que não existe como chave primária na tabela 1: Retorna ERRO! Foreign Key constraint.
+
+
+
+
+
+
