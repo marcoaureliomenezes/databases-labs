@@ -1,0 +1,1 @@
+print("Here I 'll seed with bulk and real time data a Mongodb database for performance tests.")
