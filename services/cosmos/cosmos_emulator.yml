@@ -1,0 +1,21 @@
+version: '3'
+
+
+services:
+  cosmosdb-emulator:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    ports:
+      - "8081:8081"
+      - "10250-10255:10250-10255"
+    stdin_open: true
+    volumes:
+      - /usr/local/share/ca-certificates/:/_explorer/emulator.pem
+      - ./mnt/cosmosdb-emulator/data:/tmp/cosmos/appdata/.system/profiles/Client/AppData/Local/CosmosDBEmulator
+    tty: true
+    networks:
+      - cosmosdb-emulator-network
+
+networks:
+  cosmosdb-emulator-network:
+    driver: bridge
+

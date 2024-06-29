@@ -1,0 +1,57 @@
+
+// CONCAT e SPLIT
+db.clientes.aggregate([{
+    $project: {
+        nome_e_cpf: {
+            $concat: ["$nome", " - ", "$cpf"]
+        },
+        nome_quebrado: {
+            split: ["$nome", " "]
+        }
+    }
+}])
+
+
+// TO LOWER and TO_UPPER
+db.clientes.aggregate([{
+    $project: {
+        nome_minusculo: {
+            $toLower: "$nome"
+        },
+        nome_maiusculo: {
+            $toUpper: "$nome"
+        }  
+    }
+}])
+
+
+// Convert float to string
+db.contas.aggregate({
+    $project: {
+        descricao:{
+            $concat: [
+                "O cliente de CPF ", "$cpf", "possui o valor de ", {$toString: "$valor"}, " na ", "$tipo"    
+            ]
+        }
+    }    
+})
+
+// Workingwith Dates 
+
+db.clientes.aggregate([{
+    $project: {
+        nome:1,
+        ano_nascimento: {
+            $year: "$data_nascimento"
+        },
+        mes_nascimento: {
+            $month: "$data_nascimento"
+        },
+        dia_semana: {
+            $dayOfWeek: "$data_nascimento"
+        },
+        partes_data: {
+            $dateToParts: {date: "$data_nascimento"}
+        },
+    }
+}])

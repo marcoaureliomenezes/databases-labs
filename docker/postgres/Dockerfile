@@ -1,8 +1,11 @@
 FROM postgres
 
 
-COPY init_book_authors_db.sql /docker-entrypoint-initdb.d/
-COPY init_montadoras_db.sql /docker-entrypoint-initdb.d/
-COPY init_photos_score_db.sql /docker-entrypoint-initdb.d/
-COPY init_celular_sales_db.sql /docker-entrypoint-initdb.d/
-COPY init_user_product_order_db.sql /docker-entrypoint-initdb.d/
+COPY ./databases/sucos_vendas/sucos_dadaia_schema.sql /docker-entrypoint-initdb.d/
+COPY ./databases/company/company_dadaia_schema.sql /docker-entrypoint-initdb.d/
+COPY ./databases/learning/sharding.sql /docker-entrypoint-initdb.d/
+
+
+
+COPY ./databases/sucos_vendas/sucos_dadaia_data.sql /seeders/sucos_dadaia_data.sql
+COPY ./databases/company/company_dadaia_data.sql /seeders/company_dadaia_data.sql

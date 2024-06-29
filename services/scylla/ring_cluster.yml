@@ -1,0 +1,18 @@
+version: '3'
+
+
+services:
+
+  scylla-node1:
+    << : *scylla-base
+    container_name: scylla-node1
+    ports:
+      - "19042:9042"
+
+  scylla-node2:
+    << : *scylla-base
+    container_name: scylla-node2
+
+  scylla-node3:
+    << : *scylla-base
+    container_name: scylla-node3

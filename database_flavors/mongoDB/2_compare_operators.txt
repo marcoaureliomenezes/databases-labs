@@ -1,0 +1,45 @@
+
+
+// BASE DE CLIENTE 
+db.clientes.find()
+
+// encontrar somente clientes mulheres
+db.clientes.find({
+    genero: {$eq: "Feminino"}
+})
+
+// Buscar somente clientes não casados
+db.clientes.find({
+    status_civil: {$ne: "Casado(a)"}
+})
+
+// Buscar somente clientes mulheres e não casadas
+db.clientes.find({
+    $and: [
+        {genero: {$eq: "Feminino"}}, 
+        {status_civil: {$ne: "Casado(a)"}}
+    ]
+})
+ 
+ 
+db.contas.find({
+    $or: [
+        {tipo: {$in: ["Conta salário", "Conta poupanca"]}},
+        {valor: {$lt: 1000}}
+    ]
+})
+
+
+// Comparadores $eq $gt, $gte, $lt, $lte
+
+// db.clientes.find({ genero: "Masculino"})
+
+// db.clientes.find({ genero: {$eq: "Masculino"}})
+
+// db.clientes.find({ genero: {$ne: "Masculino"}})
+
+// db.contas.find({ valor: {$gt: 1000}})
+
+// db.contas.find({ valor: {$lt: 1000}})
+
+// db.clientes.find({ status_civil: {$in: ["Viúvo(a)", "Casado(a)"]}})

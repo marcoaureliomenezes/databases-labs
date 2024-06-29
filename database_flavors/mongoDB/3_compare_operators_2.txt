@@ -1,0 +1,24 @@
+// db.contas.find()
+    
+    
+// db.contas.find({$and: [{tipo: {$eq: "Conta salário"}}, {valor: {$gt: 9000}}]})
+
+// db.contas.find({$or: [{tipo: {$eq: "Conta salário"}}, {valor: {$gt: 9000}}]})
+
+
+// db.enderecos.find({estado: {$not: {$eq: "SP"}}});
+
+// db.clientes.find({dependentes: {$exists: false}})
+
+// db.clientes.find({dependentes: {$exists: true}})
+
+// db.clientes.find({seguros: {type: 2}})
+
+db.clientes.find()
+db.clientes.find({dependentes: {$exists: true}})
+
+db.clientes.find({seguros: {$all: ["seguro de vida", "seguro para carro"]}})
+
+db.clientes.find({dependentes: {$size: 2}})
+
+db.clientes.find({dependentes: {$size: 2}}, {dependentes: {$slice: 1}})

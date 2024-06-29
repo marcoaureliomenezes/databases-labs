@@ -1,0 +1,37 @@
+version: '3'
+
+
+x-healthcheck: &healthcheck
+  interval: 10s
+  timeout: 20s
+  retries: 15
+
+x-networks: &networks
+
+
+    
+services:
+
+
+  postgres:
+    build: ../../docker/postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "15432:5432"
+    networks:
+      - databases-net
+    volumes:
+      - ../../mnt/single_postgres/data:/var/lib/postgresql/data
+    healthcheck:
+      interval: 10s
+      timeout: 20s
+      retries: 15
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      <<: *healthcheck
+
+networks:
+  databases-net:
+    driver: bridge

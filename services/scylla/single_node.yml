@@ -1,0 +1,22 @@
+version: '3'
+
+
+
+services:
+
+
+  cassandra:
+    build: ./docker/cassandra
+    restart: always
+    <<: *networks
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe cluster"]
+      <<: *healthcheck
+      
+
+
+
+
+networks:
+  databases-net:
+    driver: bridge

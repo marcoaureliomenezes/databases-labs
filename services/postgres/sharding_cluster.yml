@@ -1,0 +1,42 @@
+version: '3'
+
+x-common-settings: &postgres-base
+  restart: always
+  environment:
+    POSTGRES_PASSWORD: postgres
+  networks:
+    - postgres-net
+  healthcheck:
+    test: ["CMD", "pg_isready", "-U", "postgres"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
+services:
+
+
+  pg_sharding_1:
+    build: ./docker/postgres
+    <<: *postgres-base
+    container_name: dadaia_pg_sharding_1
+    ports:
+      - 15432:5432
+
+  pg_sharding_2:
+    build: ./docker/postgres
+    <<: *postgres-base
+    container_name: dadaia_pg_sharding_2
+    ports:
+      - 15433:5432
+
+  pg_sharding_3:
+    build: ./docker/postgres
+    <<: *postgres-base
+    container_name: dadaia_pg_sharding_3
+    ports:
+      - 15434:5432
+
+
+networks:
+  postgres-net:
+    driver: bridge

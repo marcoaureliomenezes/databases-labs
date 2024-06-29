@@ -1,0 +1,31 @@
+version: '3'
+
+
+x-healthcheck: &healthcheck_commons
+  interval: 10s
+  timeout: 20s
+  retries: 15
+
+x-networks: &networks
+  networks:
+    - databases-net
+
+services:
+
+  mysql:
+    build: ../docker/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: learning
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    <<: *networks
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      <<: *healthcheck
+
+networks:
+  databases-net:
+    driver: bridge

@@ -1,0 +1,15 @@
+db.contas.find().limit(5)
+
+// Offset 5 and limit 5
+db.contas.find().skip(5).limit(5)
+
+// Sorting by name
+db.clientes.find().sort({nome: 1})
+
+// Count
+db.clientes.count()
+db.clientes.find().count()
+
+// Seeing distinct values
+db.contas.distinct("tipo")
+

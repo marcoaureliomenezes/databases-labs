@@ -1,0 +1,30 @@
+// Estágio 
+
+
+db.clientes.find().count()
+
+db.clientes.count()
+
+
+db.clientes.aggregate({$count: "contagem de clientes"})
+
+
+db.contas.aggregate({$group: {_id: "$tipo"}})
+
+db.contas.aggregate({$group: {_id: "$tipo", contagem: {$count: {}}}})
+
+
+
+// limit
+db.contas.find().limit(10)
+db.contas.aggregate({ $limit: 10 })
+
+// skip 
+db.contas.find().skip(10)
+db.contas.aggregate({ $skip: 10 })
+
+// sort
+db.contas.aggregate([{$sort: {valor: -1}}])
+
+db.contas.aggregate([{$sort: {valor: -1}}, {$limit: 5}])
+
